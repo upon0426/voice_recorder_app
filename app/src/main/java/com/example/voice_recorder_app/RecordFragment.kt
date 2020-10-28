@@ -12,16 +12,7 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [RecordFlagment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class RecordFragment : Fragment() {
 
     override fun onCreateView(
@@ -34,17 +25,4 @@ class RecordFragment : Fragment() {
         }
         return view
     }
-
-//    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-//        super.onViewCreated(view, savedInstanceState)
-//        view.findViewById<ImageButton>(R.id.record_list_btn).setOnClickListener(this)
-//    }
-//
-//    override fun onClick(view: View?) {
-//        when (view?.id) {
-//            R.id.record_list_btn -> findNavController().navigate(R.id.action_recordFragment_to_audioListFragment)
-//        }
-//    }
-
-
 }
