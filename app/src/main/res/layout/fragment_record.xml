@@ -24,7 +24,7 @@
         android:layout_marginTop="32dp"
         android:fontFamily="sans-serif-medium"
         android:text="Press the mic button \n to start recording"
-        android:textSize="18sp"
+        android:textSize="24dp"
         android:lineHeight="32dp"
         android:textColor="@color/colorDarkBlue"
         android:textAlignment="center"
