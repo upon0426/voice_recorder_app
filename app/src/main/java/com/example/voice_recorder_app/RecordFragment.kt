@@ -13,16 +13,35 @@ import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 
 
-class RecordFragment : Fragment() {
+class RecordFragment(private var isRecording: Boolean = false) : Fragment(), View.OnClickListener {
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_record, container, false)
-        view.findViewById<ImageButton>(R.id.record_list_btn).setOnClickListener{
-            findNavController().navigate(R.id.action_recordFragment_to_audioListFragment)
+        return inflater.inflate(R.layout.fragment_record, container, false)
         }
-        return view
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        view.findViewById<ImageButton>(R.id.record_list_btn).setOnClickListener(this)
+        view.findViewById<ImageButton>(R.id.record_btn).setOnClickListener(this)
+
+    }
+
+    override fun onClick(view: View?) {
+        when (view?.id) {
+            R.id.record_list_btn -> findNavController().navigate(R.id.action_recordFragment_to_audioListFragment)
+            R.id.record_btn -> {
+                if (isRecording) {
+                    view.findViewById<ImageButton>(R.id.record_btn).setImageResource(R.drawable.stop_recording)
+                    isRecording = false
+                } else {
+                    view.findViewById<ImageButton>(R.id.record_btn).setImageResource(R.drawable.record)
+                    isRecording = true
+                }
+            }
+        }
     }
 }
