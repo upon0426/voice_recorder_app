@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".RecordFlagment">
+    tools:context=".RecordFragment">
 
     <ImageView
         android:id="@+id/record_header_image"
@@ -14,14 +14,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:src="@drawable/yubibue_girl"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="32dp"
         />
 
     <TextView
         android:id="@+id/record_filename"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="32dp"
         android:fontFamily="sans-serif-medium"
         android:text="Press the mic button \n to start recording"
         android:textSize="18sp"
@@ -40,7 +40,7 @@
         app:layout_constraintTop_toBottomOf="@id/record_filename"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="32dp"
         android:fontFamily="sans-serif-light"
         android:textSize="64sp"
         android:textColor="@color/colorDarkBlue"
@@ -48,19 +48,21 @@
         android:layout_height="wrap_content"
         />
 
-    <ImageView
+    <ImageButton
         android:id="@+id/record_btn"
+        android:background="@android:color/white"
         app:layout_constraintTop_toBottomOf="@id/record_timer"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         android:src="@drawable/record"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         />
 
-    <ImageView
+    <ImageButton
         android:id="@+id/record_list_btn"
+        android:background="@android:color/white"
         app:layout_constraintTop_toTopOf="@+id/record_btn"
         app:layout_constraintBottom_toBottomOf="@id/record_btn"
         app:layout_constraintStart_toEndOf="@id/record_btn"
