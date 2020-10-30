@@ -1,11 +1,13 @@
 package com.example.voice_recorder_app
 
 import android.app.Activity
+import android.content.ContentValues.TAG
 import android.content.pm.PackageManager
 import android.media.Image
 import android.media.MediaRecorder
 import android.os.Bundle
 import android.os.Environment
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -19,13 +21,16 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import java.io.File
+import java.io.IOException
 import java.util.jar.Manifest
+import kotlin.math.log
 
 
 class RecordFragment() : Fragment(), View.OnClickListener {
 
     private var isRecording: Boolean = false
     private var mediaRecorder: MediaRecorder? = null
+    private var recordPath: File? = null
     private var recordFile: String = ""
 
     override fun onCreateView(
@@ -63,32 +68,41 @@ class RecordFragment() : Fragment(), View.OnClickListener {
     }
 
     private fun stopRecording() {
-        mediaRecorder?.stop()
-        mediaRecorder?.release()
+        mediaRecorder?.apply {
+            stop()
+            reset()
+            release()
+        }
         mediaRecorder = null
     }
 
     private fun startRecording() {
-        var recordPath: File? = File(context?.getExternalFilesDir(Environment.DIRECTORY_MUSIC), "voice_recorder")
-        recordFile = "Filename.3bg"
+        recordPath = context?.getExternalFilesDir("/")
+        recordFile = "name.3gp"
 
-        mediaRecorder = MediaRecorder()
-        mediaRecorder?.setAudioSource(MediaRecorder.AudioSource.MIC)
-        mediaRecorder?.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP)
-        mediaRecorder?.setOutputFile(recordPath.toString() + "/" + recordFile)
-        mediaRecorder?.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB)
 
-        mediaRecorder?.prepare()
-        mediaRecorder?.start()
+        mediaRecorder = MediaRecorder().apply {
+            setAudioSource(MediaRecorder.AudioSource.MIC)
+            setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP)
+            setOutputFile(recordPath?.absolutePath + "_" + recordFile)
+            Log.e(TAG, "path: " + recordPath?.absoluteFile + "_" + recordFile)
+            setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB)
 
+            try {
+                prepare()
+            } catch (e: IOException) {
+                Log.e(TAG, "prepare() failed")
+            }
+            start()
+        }
     }
 
     private fun checkPermissions(): Boolean {
-            if (context?.let { ContextCompat.checkSelfPermission(it, android.Manifest.permission.RECORD_AUDIO) } == PackageManager.PERMISSION_GRANTED) {
-                return true
-            } else {
-                activity?.let { ActivityCompat.requestPermissions(it, arrayOf(android.Manifest.permission.RECORD_AUDIO), 1234) }
-                return false
-            }
+        return if (context?.let { ContextCompat.checkSelfPermission(it, android.Manifest.permission.RECORD_AUDIO) } == PackageManager.PERMISSION_GRANTED) {
+            true
+        } else {
+            activity?.let { ActivityCompat.requestPermissions(it, arrayOf(android.Manifest.permission.RECORD_AUDIO), 1234) }
+            false
+        }
         }
     }
