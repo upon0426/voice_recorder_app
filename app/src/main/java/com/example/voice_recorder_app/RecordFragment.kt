@@ -16,12 +16,14 @@ import android.view.ViewGroup
 import android.widget.Chronometer
 import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.PermissionChecker.checkSelfPermission
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
+import org.w3c.dom.Text
 import java.io.File
 import java.io.IOException
 import java.sql.Date
@@ -38,6 +40,7 @@ class RecordFragment() : Fragment(), View.OnClickListener {
     private var recordPath: File? = null
     private var recordFile: String = ""
     private var timer: Chronometer? = null
+    private var fileNameText: TextView? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,6 +51,7 @@ class RecordFragment() : Fragment(), View.OnClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         timer = view.findViewById<Chronometer>(R.id.record_timer)
+        fileNameText = view.findViewById<TextView>(R.id.record_filename)
 
         super.onViewCreated(view, savedInstanceState)
         view.findViewById<ImageButton>(R.id.record_list_btn).setOnClickListener(this)
@@ -77,6 +81,8 @@ class RecordFragment() : Fragment(), View.OnClickListener {
     private fun stopRecording() {
         timer?.stop()
 
+        fileNameText?.setText("Recording Stopped, File Saved : " + recordFile)
+
         mediaRecorder?.apply {
             stop()
             reset()
@@ -93,6 +99,8 @@ class RecordFragment() : Fragment(), View.OnClickListener {
         val formatter = SimpleDateFormat("yyyy_MM_dd_hh_mm_ss", Locale.JAPAN)
         val now: java.util.Date = Date()
         recordFile = formatter.format(now) + ".3gp"
+
+        fileNameText?.setText("Recording, File Name : " + recordFile)
 
         mediaRecorder = MediaRecorder().apply {
             setAudioSource(MediaRecorder.AudioSource.MIC)
