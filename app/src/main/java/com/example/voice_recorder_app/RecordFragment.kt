@@ -22,6 +22,9 @@ import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import java.io.File
 import java.io.IOException
+import java.sql.Date
+import java.text.SimpleDateFormat
+import java.util.*
 import java.util.jar.Manifest
 import kotlin.math.log
 
@@ -78,14 +81,14 @@ class RecordFragment() : Fragment(), View.OnClickListener {
 
     private fun startRecording() {
         recordPath = context?.getExternalFilesDir("/")
-        recordFile = "name.3gp"
-
+        val formatter = SimpleDateFormat("yyyy_MM_dd_hh_mm_ss", Locale.JAPAN)
+        val now: java.util.Date = Date()
+        recordFile = formatter.format(now) + ".3gp"
 
         mediaRecorder = MediaRecorder().apply {
             setAudioSource(MediaRecorder.AudioSource.MIC)
             setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP)
             setOutputFile(recordPath?.absolutePath + "_" + recordFile)
-            Log.e(TAG, "path: " + recordPath?.absoluteFile + "_" + recordFile)
             setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB)
 
             try {
