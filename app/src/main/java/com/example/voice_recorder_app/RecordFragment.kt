@@ -7,11 +7,13 @@ import android.media.Image
 import android.media.MediaRecorder
 import android.os.Bundle
 import android.os.Environment
+import android.os.SystemClock
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Chronometer
 import android.widget.ImageButton
 import android.widget.ImageView
 import androidx.core.app.ActivityCompat
@@ -35,6 +37,7 @@ class RecordFragment() : Fragment(), View.OnClickListener {
     private var mediaRecorder: MediaRecorder? = null
     private var recordPath: File? = null
     private var recordFile: String = ""
+    private var timer: Chronometer? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,10 +47,11 @@ class RecordFragment() : Fragment(), View.OnClickListener {
         }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        timer = view.findViewById<Chronometer>(R.id.record_timer)
+
         super.onViewCreated(view, savedInstanceState)
         view.findViewById<ImageButton>(R.id.record_list_btn).setOnClickListener(this)
         view.findViewById<ImageButton>(R.id.record_btn).setOnClickListener(this)
-
     }
 
     override fun onClick(view: View?) {
@@ -71,6 +75,8 @@ class RecordFragment() : Fragment(), View.OnClickListener {
     }
 
     private fun stopRecording() {
+        timer?.stop()
+
         mediaRecorder?.apply {
             stop()
             reset()
@@ -80,6 +86,9 @@ class RecordFragment() : Fragment(), View.OnClickListener {
     }
 
     private fun startRecording() {
+        timer?.setBase(SystemClock.elapsedRealtime())
+        timer?.start()
+
         recordPath = context?.getExternalFilesDir("/")
         val formatter = SimpleDateFormat("yyyy_MM_dd_hh_mm_ss", Locale.JAPAN)
         val now: java.util.Date = Date()
