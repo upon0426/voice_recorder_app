@@ -23,7 +23,9 @@ class AudioListAdapter(
     }
 
     override fun onBindViewHolder(holder: AudioViewHolder, position: Int) {
+        val timeAgo = TimeAgo()
         holder.list_title.text = allFiles?.get(position)?.name
+        holder.list_date.text = allFiles?.get(position)?.lastModified()?.let { timeAgo.getTimeAgo(it) }
     }
 
     override fun getItemCount(): Int {
