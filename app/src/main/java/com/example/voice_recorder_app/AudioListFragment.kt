@@ -13,15 +13,18 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import java.io.File
 
 class AudioListFragment : Fragment()  {
-    val path: String? = activity?.getExternalFilesDir("/")?.absolutePath
-    val directory = File(path).parentFile
-    val allFiles = directory.listFiles()
+    lateinit var path: String
+    lateinit var directory: File
+    lateinit var allFiles: Array<File>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
+        path = activity?.getExternalFilesDir("/")?.absolutePath!!
+        directory = File(path).parentFile
+        allFiles = directory.listFiles()
         return inflater.inflate(R.layout.fragment_audio_list, container, false)
     }
 
