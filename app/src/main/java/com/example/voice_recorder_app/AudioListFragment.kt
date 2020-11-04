@@ -1,7 +1,5 @@
 package com.example.voice_recorder_app
 
-import android.content.ContentValues
-import android.content.ContentValues.TAG
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -14,8 +12,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import java.io.File
 
-class AudioListFragment : Fragment() {
-
+class AudioListFragment : Fragment()  {
+    val path: String? = activity?.getExternalFilesDir("/")?.absolutePath
+    val directory = File(path).parentFile
+    val allFiles = directory.listFiles()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,18 +30,11 @@ class AudioListFragment : Fragment() {
         val playerSheet: ConstraintLayout = view.findViewById(R.id.player_sheet)
         val bottomSheetBehavior = BottomSheetBehavior.from(playerSheet)
         val audioList: RecyclerView = view.findViewById(R.id.audio_list_view)
-
-        val path: String? = activity?.getExternalFilesDir("/")?.absolutePath
-        val directory = File(path).parentFile
-        val allFiles = directory.listFiles()
-        //Log.e(TAG, directory.listFiles()[3].name)
-
         val audioListAdapter = AudioListAdapter(allFiles)
 
         audioList.setHasFixedSize(true)
         audioList.layoutManager = LinearLayoutManager(context)
         audioList.adapter = audioListAdapter
-
 
             bottomSheetBehavior.addBottomSheetCallback(object: BottomSheetBehavior.BottomSheetCallback() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
@@ -54,6 +47,15 @@ class AudioListFragment : Fragment() {
                 // do nothing
             }
         })
+
+        audioListAdapter.setOnItemClickListener(object :AudioListAdapter.OnItemListClick{
+            override fun onClickListener(view: View, file: File, position: Int) {
+                Log.d("PLAY LOG", "File Playing" + file.name)
+            }
+        })
     }
+
+
+
 
 }
