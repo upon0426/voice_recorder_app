@@ -1,5 +1,6 @@
 package com.example.voice_recorder_app
 
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -13,9 +14,14 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import java.io.File
 
 class AudioListFragment : Fragment()  {
+    
+    private var mediaPlayer: MediaPlayer? = null
+    private var isPlaying: Boolean = false
+
     lateinit var path: String
     lateinit var directory: File
     lateinit var allFiles: Array<File>
+    lateinit var fileToPlay: File
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -53,12 +59,31 @@ class AudioListFragment : Fragment()  {
 
         audioListAdapter.setOnItemClickListener(object :AudioListAdapter.OnItemListClick{
             override fun onClickListener(view: View, file: File, position: Int) {
-                Log.d("PLAY LOG", "File Playing" + file.name)
+                if (isPlaying) {
+                    stopAudio()
+                    playAudio(fileToPlay)
+                } else {
+                    fileToPlay = file
+                    playAudio(fileToPlay)
+                }
             }
         })
     }
 
+    private fun stopAudio() {
+        isPlaying = false
+    }
 
+    private fun playAudio(fileToPlay: File) {
+        mediaPlayer = MediaPlayer()
+
+        mediaPlayer!!.setDataSource(fileToPlay.absolutePath)
+        mediaPlayer!!.prepare()
+        mediaPlayer!!.start()
+
+        isPlaying = true
+
+    }
 
 
 }
