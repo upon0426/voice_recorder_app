@@ -90,6 +90,30 @@ class AudioListFragment : Fragment(), Runnable {
                 }
             }
         })
+
+        playerBtn.setOnClickListener(object :View.OnClickListener {
+            override fun onClick(p0: View?) {
+                if (isPlaying) {
+                    pauseAudio()
+                } else {
+                    if (fileToPlay != null) {
+                        resumeAudio()
+                    }
+                }
+            }
+        })
+    }
+
+    private fun pauseAudio() {
+        mediaPlayer!!.pause()
+        playerBtn.setImageResource(R.drawable.play_arrow)
+        isPlaying = false
+    }
+
+    private fun resumeAudio() {
+        mediaPlayer!!.start()
+        playerBtn.setImageResource(R.drawable.pause)
+        isPlaying = true
     }
 
     private fun stopAudio() {
