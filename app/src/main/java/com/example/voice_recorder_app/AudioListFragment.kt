@@ -102,6 +102,26 @@ class AudioListFragment : Fragment(), Runnable {
                 }
             }
         })
+
+        playerSeekBar.setOnSeekBarChangeListener(object :SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
+                // do nothing
+            }
+
+            override fun onStartTrackingTouch(p0: SeekBar?) {
+                if (fileToPlay != null) {
+                    pauseAudio()
+                }
+            }
+
+            override fun onStopTrackingTouch(p0: SeekBar?) {
+                if (fileToPlay != null) {
+                    var progress = p0!!.progress
+                    mediaPlayer!!.seekTo(progress)
+                    resumeAudio()
+                }
+            }
+        })
     }
 
     private fun pauseAudio() {
