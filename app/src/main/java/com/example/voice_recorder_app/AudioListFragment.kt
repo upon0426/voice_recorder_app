@@ -108,19 +108,21 @@ class AudioListFragment : Fragment(), Runnable {
         mediaPlayer!!.pause()
         playerBtn.setImageResource(R.drawable.play_arrow)
         isPlaying = false
+        seekBarHandler.removeCallbacks(updateSeekBar)
     }
 
     private fun resumeAudio() {
         mediaPlayer!!.start()
         playerBtn.setImageResource(R.drawable.pause)
         isPlaying = true
-    }
+        run()
+        seekBarHandler.postDelayed(updateSeekBar, 0)    }
 
     private fun stopAudio() {
         playerBtn.setImageResource(R.drawable.play_arrow)
         playerHeader.text = "Stopped"
         isPlaying = false
-
+        seekBarHandler.removeCallbacks(updateSeekBar)
     }
 
     private fun playAudio(fileToPlay: File) {
