@@ -25,6 +25,9 @@ class AudioListFragment : Fragment()  {
     lateinit var allFiles: Array<File>
     lateinit var fileToPlay: File
 
+    private lateinit var bottomSheetBehavior: BottomSheetBehavior<ConstraintLayout>
+
+
     // UI element
     lateinit var playerBtn: ImageButton
     lateinit var playerHeader: TextView
@@ -44,9 +47,10 @@ class AudioListFragment : Fragment()  {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val playerSheet: ConstraintLayout = view.findViewById(R.id.player_sheet)
-        val bottomSheetBehavior = BottomSheetBehavior.from(playerSheet)
         val audioList: RecyclerView = view.findViewById(R.id.audio_list_view)
         val audioListAdapter = AudioListAdapter(allFiles)
+
+        bottomSheetBehavior = BottomSheetBehavior.from(playerSheet)
 
         playerBtn = view.findViewById(R.id.play_btn)
         playerHeader = view.findViewById(R.id.player_header_title)
@@ -90,6 +94,10 @@ class AudioListFragment : Fragment()  {
 
     private fun playAudio(fileToPlay: File) {
         mediaPlayer = MediaPlayer()
+
+        if (bottomSheetBehavior.state != BottomSheetBehavior.STATE_EXPANDED) {
+            bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+        }
 
         mediaPlayer!!.setDataSource(fileToPlay.absolutePath)
         mediaPlayer!!.prepare()
