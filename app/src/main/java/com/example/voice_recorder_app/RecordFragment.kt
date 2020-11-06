@@ -1,6 +1,7 @@
 package com.example.voice_recorder_app
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.ContentValues.TAG
 import android.content.pm.PackageManager
 import android.media.Image
@@ -60,18 +61,32 @@ class RecordFragment() : Fragment(), View.OnClickListener {
 
     override fun onClick(view: View?) {
         when (view?.id) {
-            R.id.record_list_btn -> findNavController().navigate(R.id.action_recordFragment_to_audioListFragment)
-            R.id.record_btn -> {
+            R.id.record_list_btn -> {
                 if (isRecording) {
+                    val alertDialog = AlertDialog.Builder(context)
+                            alertDialog.setTitle("Audio still recording")
+                            alertDialog.setMessage("Are you sure you want to stop recording?")
+                            alertDialog.setPositiveButton("YES") { dialog, which ->
+                                findNavController().navigate(R.id.action_recordFragment_to_audioListFragment)
+                                isRecording = false
+                            }
+                            alertDialog.setNegativeButton("NO", null)
+                            alertDialog.show()
+                } else {
+                    findNavController().navigate(R.id.action_recordFragment_to_audioListFragment)
+                }
+            }
+            R.id.record_btn -> {
+                if (!isRecording) {
                     startRecording()
                     view.findViewById<ImageButton>(R.id.record_btn).setImageResource(R.drawable.stop_recording)
-                    isRecording = false
+                    isRecording = true
                 } else {
                     if (checkPermissions()) {
                         stopRecording()
                         view.findViewById<ImageButton>(R.id.record_btn)
                             .setImageResource(R.drawable.record)
-                        isRecording = true
+                        isRecording = false
                     }
                 }
             }
@@ -125,4 +140,9 @@ class RecordFragment() : Fragment(), View.OnClickListener {
             false
         }
         }
+
+    override fun onStop() {
+        super.onStop()
+        stopRecording()
+    }
     }

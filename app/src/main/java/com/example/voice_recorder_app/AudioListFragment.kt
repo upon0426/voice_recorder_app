@@ -178,5 +178,11 @@ class AudioListFragment : Fragment(), Runnable {
         seekBarHandler.postDelayed(this, 500)
     }
 
+    override fun onStop() {
+        super.onStop()
+        if (isPlaying) {
+            stopAudio()
+        }
+    }
 
 }
