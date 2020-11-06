@@ -56,13 +56,6 @@ class AudioListFragment : Fragment()  {
         audioList.layoutManager = LinearLayoutManager(context)
         audioList.adapter = audioListAdapter
 
-        mediaPlayer?.setOnCompletionListener(object: MediaPlayer.OnCompletionListener {
-            override fun onCompletion(p0: MediaPlayer?) {
-                stopAudio()
-                playerHeader.text = "Finished"
-            }
-        })
-
             bottomSheetBehavior.addBottomSheetCallback(object: BottomSheetBehavior.BottomSheetCallback() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
                 if (newState == BottomSheetBehavior.STATE_HIDDEN) {
@@ -108,6 +101,10 @@ class AudioListFragment : Fragment()  {
 
         isPlaying = true
 
+        mediaPlayer!!.setOnCompletionListener {
+            stopAudio()
+            playerHeader.text = "Finished"
+        }
     }
 
 
