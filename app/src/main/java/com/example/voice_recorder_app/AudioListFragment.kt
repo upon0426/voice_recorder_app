@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import java.io.File
 
-class AudioListFragment : Fragment()  {
+class AudioListFragment : Fragment(), Runnable {
     
     private var mediaPlayer: MediaPlayer? = null
     private var isPlaying: Boolean = false
@@ -34,7 +34,9 @@ class AudioListFragment : Fragment()  {
     lateinit var playerBtn: ImageButton
     lateinit var playerHeader: TextView
     lateinit var playerFilename: TextView
-
+    lateinit var playerSeekBar: SeekBar
+    lateinit var seekBarHandler: Handler
+    lateinit var updateSeekBar: Runnable
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -58,6 +60,8 @@ class AudioListFragment : Fragment()  {
         playerBtn = view.findViewById(R.id.play_btn)
         playerHeader = view.findViewById(R.id.player_header_title)
         playerFilename = view.findViewById(R.id.player_filename)
+
+        playerSeekBar = view.findViewById(R.id.player_seekBar)
 
         audioList.setHasFixedSize(true)
         audioList.layoutManager = LinearLayoutManager(context)
@@ -116,6 +120,16 @@ class AudioListFragment : Fragment()  {
             stopAudio()
             playerHeader.text = "Finished"
         }
+
+        playerSeekBar.max = mediaPlayer!!.duration
+        seekBarHandler = Handler()
+        updateSeekBar = Runnable {this.run()}
+        seekBarHandler.postDelayed(updateSeekBar, 0)
+    }
+
+    override fun run() {
+        playerSeekBar.progress = mediaPlayer!!.currentPosition
+        seekBarHandler.postDelayed(this, 500)
     }
 
 
