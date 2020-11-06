@@ -2,12 +2,14 @@ package com.example.voice_recorder_app
 
 import android.media.MediaPlayer
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
+import android.widget.SeekBar
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -32,6 +34,7 @@ class AudioListFragment : Fragment()  {
     lateinit var playerBtn: ImageButton
     lateinit var playerHeader: TextView
     lateinit var playerFilename: TextView
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -88,8 +91,8 @@ class AudioListFragment : Fragment()  {
     private fun stopAudio() {
         playerBtn.setImageResource(R.drawable.play_arrow)
         playerHeader.text = "Stopped"
-
         isPlaying = false
+
     }
 
     private fun playAudio(fileToPlay: File) {

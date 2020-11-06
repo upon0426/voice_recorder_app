@@ -113,6 +113,7 @@
         app:srcCompat="@drawable/fast_forward" />
 
     <SeekBar
+        android:id="@+id/player_seekBar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="32dp"
