@@ -78,16 +78,16 @@ class RecordFragment() : Fragment(), View.OnClickListener {
             }
             R.id.record_btn -> {
                 if (!isRecording) {
-                    startRecording()
-                    view.findViewById<ImageButton>(R.id.record_btn).setImageResource(R.drawable.stop_recording)
-                    isRecording = true
-                } else {
                     if (checkPermissions()) {
                         stopRecording()
                         view.findViewById<ImageButton>(R.id.record_btn)
-                            .setImageResource(R.drawable.record)
+                                .setImageResource(R.drawable.record)
                         isRecording = false
                     }
+                } else {
+                    startRecording()
+                    view.findViewById<ImageButton>(R.id.record_btn).setImageResource(R.drawable.stop_recording)
+                    isRecording = true
                 }
             }
         }
